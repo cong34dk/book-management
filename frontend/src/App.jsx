@@ -5,6 +5,7 @@ import BookForm from './components/BookForm';
 const App = () => {
   const [books, setBooks] = useState([]); //State lưu trữ List sách
   const [selectedBook, setSelectedBook] = useState(null); //State lưu trữ sách đang được select để update
+  const [searchTerm, setSearchTerm] = useState(''); //State lưu thông tin tìm kiếm
 
   useEffect(() => {
     // Load dữ liệu sách từ API khi component được mount
@@ -81,14 +82,28 @@ const App = () => {
     setSelectedBook(null);
   };
 
+  //Tìm kiếm sách theo tên sách
+  const filteredBooks = books.filter((book) => 
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
   return (
     <div>
       <header className="bg-dark text-white text-center py-4">
         <h1>Quản lý sách</h1>
       </header>
-      <main>
+      <main className="container mt-4">
+      <div className="mb-4">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Nhập tên cuốn sách cần tìm..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
         <BookForm onSave={handleSave} selectedBook={selectedBook} clearSelection={clearSelection} />
-        <BookList books={books} onDelete={handleDelete} onEdit={handleEdit} />
+        <BookList books={filteredBooks} onDelete={handleDelete} onEdit={handleEdit} />
       </main>
     </div>
   );
