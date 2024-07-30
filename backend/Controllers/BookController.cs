@@ -26,6 +26,21 @@ namespace backend.Controllers
             return await _context.Books.ToListAsync();
         }
 
+        /* GET: api/Books Pagination
+        [HttpGet]
+        public async Task<ActionResult<object>> GetBooks(int pageNumber = 1, int pageSize = 5)
+        {
+            //Lấy tổng số sách
+            var totalBooks = await _context.Books.CountAsync();
+            //tính toán số lượng sách cần bỏ qua dựa trên số trang và kích thước trang.
+            var books = await _context.Books
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(new { totalBooks, books });
+        } */
+
         // GET: api/Books/{id} Get by Id
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
